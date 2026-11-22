@@ -1,0 +1,46 @@
+# SocialPulse Auto-Sync by Psecstore
+# Learn more: https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = ""
+name = "SocialPulse Auto-Sync by Psecstore"
+application_url = "https://your-production-domain.com"
+embedded = true
+handle = "socialpulse-psecstore"
+
+[build]
+automatically_update_urls_on_dev = true
+include_config_on_deploy = true
+
+[access_scopes]
+# Products, Blogs/Articles, Inventory (for out-of-stock auto-pause), and Files
+scopes = "read_products,read_content,read_inventory,read_files"
+
+[auth]
+redirect_urls = [
+  "https://your-production-domain.com/auth/callback",
+  "https://your-production-domain.com/auth/shopify/callback",
+  "https://your-production-domain.com/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2026-04"
+
+  [[webhooks.subscriptions]]
+  topics = [
+    "products/create",
+    "products/update",
+    "app/uninstalled"
+  ]
+  uri = "/webhooks/shopify"
+
+  # Mandatory GDPR / Compliance webhooks required for Shopify App Store review
+  [[webhooks.subscriptions]]
+  compliance_topics = [
+    "customers/data_request",
+    "customers/redact",
+    "shop/redact"
+  ]
+  uri = "/webhooks/shopify"
+
+[pos]
+embedded = false
